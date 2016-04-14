@@ -28,7 +28,10 @@ def login():
 
 @app.route('/echar_test')
 def echar_test():
-	return render_template("echar_test.html")
+	timeData = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+	data1=[0,23416,0,0,7464,0,0,27216,0,2336,16240,3360,18432,20656,11848,4896,7464,2560,12744,2560,4608,512,14064,11776]
+	data2=[0,23416,0,0,7464,0,0,27216,0,2336,16240,3360,18432,20656,11848,4896,7464,2560,12744,2560,4608,512,14064,11776]
+	return render_template("echar_test.html",timeData=timeData, date1='201004', date2='201005', data1=data1,data2=data2)
 
 @app.route('/echarts.min.js')
 def echar_js():
