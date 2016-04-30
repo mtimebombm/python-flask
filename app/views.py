@@ -7,7 +7,7 @@ import numpy as np
 import MySQLdb
 import pandas.io.sql as sql
 
-conn = MySQLdb.connect (host = "192.168.254.130",user = "root",passwd = "cyberaudit",db = "cyberaudit_data")
+conn = MySQLdb.connect (host = "192.168.29.30",user = "root",passwd = "cyberaudit",db = "cyberaudit_data")
 
 
 @app.route('/')
@@ -55,6 +55,7 @@ def echar_test(ip):
 
 @app.route('/echarts.min.js')
 @app.route('/echar_test/echarts.min.js')
+@app.route('/mysqltest/echarts.min.js')
 def echar_js():
 	return render_template("echarts.min.js")
 	
@@ -62,11 +63,31 @@ def echar_js():
 def ip_input():
 	form = IpForm()
 	if form.validate_on_submit():
-		return redirect(url_for('echar_test', ip=form.ip.data))
+		#return redirect(url_for('echar_test', ip=form.ip.data))
+		return redirect(url_for('mysqltest', ip=form.ip.data))
 	return render_template('input_ip.html', title = 'Sign In', form=form, providers = app.config['OPENID_PROVIDERS'])
 
-@app.route('/mysqltest')
-def mysqltest():
-	ip_profile_service2 = sql.read_sql("select * from di_ip_address", conn)
-	return render_template('mysqltest.html', data=ip_profile_service2)
+@app.route('/mysqltest/<ip>')
+def mysqltest(ip):
+	key = ["frequency_24_hour","up_byte_24_hour","down_byte_24_hour","eth_frequency_24_hour",
+    "eth_up_byte_24_hour","eth_down_byte_24_hour","intra_frequency_24_hour","intra_up_byte_24_hour",
+    "intra_down_byte_24_hour","inter_frequency_24_hour","inter_up_byte_24_hour","inter_down_byte_24_hour",
+    "frequency_7_day","up_byte_7_day","down_byte_7_day","eth_frequency_7_day","eth_up_byte_7_day",
+    "eth_down_byte_7_day","intra_frequency_7_day","intra_up_byte_7_day","intra_down_byte_7_day",
+    "inter_frequency_7_day","inter_up_byte_7_day","inter_down_byte_7_day"]
+	in_data = []
+	out_data = []
+	sql_str = "select * from ip_profile_service where ip=inet_aton('"+ip+"')"
+	ip_profile_service1 = sql.read_sql(sql_str, conn, "id")
+	for key_id in key:
+		ip_profile_service1[key_id] = [[float(a) for a in z.split(",")] for z in ip_profile_service1[key_id]]
+	data_list = ip_profile_service1.T.to_dict(outtype='list').values()
+	for i in data_list:
+		if (i[1]>0):
+			in_data.append(i)
+		else:
+			out_data.append(i)
+			
+	data = [in_data, out_data]
+	return render_template("echar_test.html",data=data, ip=ip)
 	
