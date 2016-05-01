@@ -50,7 +50,7 @@ def echar_test(ip):
 	
 	data = [in_data, out_data]
 	
-	ip_profile_service2 = sql.read_sql("select * from ip_profile_service", conn, "id")
+	#ip_profile_service2 = sql.read_sql("select * from ip_profile_service", conn, "id")
 	return render_template("echar_test.html",data=data, ip=ip)
 
 @app.route('/echarts.min.js')
