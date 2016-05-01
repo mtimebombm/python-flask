@@ -83,10 +83,14 @@ def mysqltest(ip):
 		ip_profile_service1[key_id] = [[float(a) for a in z.split(",")] for z in ip_profile_service1[key_id]]
 	data_list = ip_profile_service1.T.to_dict(outtype='list').values()
 	for i in data_list:
-		if (i[1]>0):
+		if (i[1]==1):
 			in_data.append(i)
-		else:
+		elif (i[1]==2):
+			in_data.insert(0, i)
+		elif (i[1]==-1):
 			out_data.append(i)
+		elif (i[1]==-2):
+			out_data.insert(0,i)
 			
 	data = [in_data, out_data]
 	return render_template("echar_test.html",data=data, ip=ip)
