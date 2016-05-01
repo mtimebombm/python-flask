@@ -23,13 +23,18 @@
 			}
 			
 			for(var i = 1; i<(js_data[out_or_in].length); i++){
-				info[i-1] = js_data[out_or_in][i][2]+"/"+js_data[out_or_in][i][3]+"服务"
+				if (js_data[out_or_in][i][2] == 6)
+					proto = "TCP:"
+				else
+					proto = "UDP:"
+				info[i-1] = proto+js_data[out_or_in][i][3]+"服务"
 				data1[i-1] = js_data[out_or_in][i][5]+js_data[out_or_in][i][6]//流量
 				data2[i-1] = js_data[out_or_in][i][4]//频次
 			}
 			
 			show_curve2(2, 'x2y1', title1, info, data1);		
-			show_curve2(2, 'x2y2', title2, info, data2);		
+			show_curve2(2, 'x2y2', title2, info, data2);
+			//window.location.hash = "#x2y1";
 			
 		}
 		
@@ -59,6 +64,7 @@
 			
 			show_curve('x3y1', title1, '流量(bits/h)', info, data1);		
 			show_curve('x3y2', title2, '频次(count/h)', info, data2);		
+			//window.location.hash = "#x2y1";
 			
 		}
 	
@@ -193,17 +199,20 @@
 	<div align="center"><h2><b>ip = {{ip}} 画像信息展示</b></h2></div>
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 	<div>
-	<div id="x1y1" style="width:600px;height:400px;float:left" align="center"></div>
-	<div id="x1y2" style="width:600px;height:400px;float:right" align="center"></div>
+	<div id="x1y1" style="width:50%;height:50%;float:left" align="center"></div>
+	<div id="x1y2" style="width:50%;height:50%;float:right" align="center"></div>
 	</div>
+	<div id="x1" style="width:100%;height:50ppx" align="center"></div>
 	<div>
-	<div id="x2y1" style="width:600px;height:400px;float:left" align="center"></div>
-	<div id="x2y2" style="width:600px;height:400px;float:right" align="center"></div>
+	<div id="x2y1" style="width:50%;height:50%;float:left" align="center"></div>
+	<div id="x2y2" style="width:50%;height:50%;float:right" align="center"></div>
 	</div>
+	<div id="x2" style="width:100%;height:50ppx" align="center"></div>
 	<div>
-	<div id="x3y1" style="width:600px;height:600px;float:left" align="center"></div>
-	<div id="x3y2" style="width:600px;height:600px;float:right" align="center"></div>
+	<div id="x3y1" style="width:50%;height:60%;float:left" align="center"></div>
+	<div id="x3y2" style="width:50%;height:60%;float:right" align="center"></div>
 	</div>
+	<div id="x3" style="width:100%;height:50ppx" align="center"></div>
 	<!--获取带有单引号数据的方式
 	<div id="dataid" d="{{data}}" style="display:none"></div>
 	<script type="text/javascript">

@@ -1,0 +1,10 @@
+<!-- extend base layout -->
+{% extends "base.html" %}	
+
+{% block content %}
+	<div align="center"><h2><b>ip = {{ip}} 画像信息展示</b></h2></div>
+	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+	<div>
+	{{data}}
+	</div>
+{% endblock %}
